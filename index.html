@@ -316,11 +316,13 @@
             background-color: #d8959b;
         }
 
-        .pass-container img {
+        .pass-container canvas {
+            width: 100%;
             max-width: 100%;
             border-radius: 10px;
             margin-bottom: 15px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            display: block;
         }
 
         .hidden {
@@ -427,7 +429,7 @@
                 <div class="slider-container animate-zoom">
                     <img src="https://i.imgur.com/MSYBfYT.jpeg" class="active" alt="Foto 1">
                     <img src="https://i.imgur.com/OwS4Q50.png" alt="Foto 2">
-                    <img src="https://i.imgur.com/L67IlOh.jpeg" alt="Foto 3">
+                   <img src="https://i.imgur.com/L67IlOh.jpeg" alt="Foto 3">
                 </div>
             </section>
 
@@ -448,58 +450,58 @@
                     <form id="rsvp-form">
                         <h2>Confirmación de Asistencia</h2>
                         
-                        <!-- INVITADO 1 -->
+                       <!-- INVITADO 1 -->
                         <h3>Invitado 1</h3>
                         <div class="form-group">
-                            <label for="nombre1">Nombre y apellidos (Obligatorios) *</label>
-                            <input type="text" id="nombre1" name="nombre1" required placeholder="Ej. Fernanda López Cruz">
-                            <small id="error-nombre1" style="color: #d9534f; font-size: 11px; display: none; margin-top: 4px;">Ingresa nombre y al menos dos apellidos.</small>
+                            <label for="nombre1">Nombre y Apellidos (Obligatorio) *</label>
+                           <input type="text" id="nombre1" name="nombre1" required placeholder="Ej. Fernanda López Cruz">
+                           <small id="error-nombre1" style="color: #d9534f; font-size: 11px; display: none; margin-top: 4px;">Ingresa nombre y al menos dos apellidos.</small>
                         </div>
                         <div class="form-group">
                             <label for="asistencia1">¿Asistirá? *</label>
-                            <select id="asistencia1" name="asistencia1" required>
+                           <select id="asistencia1" name="asistencia1" required>
                                 <option value="" disabled selected>Selecciona una opción</option>
                                 <option value="Sí asisto">Sí, ahí estaré</option>
                                 <option value="No asisto">No podré asistir</option>
-                            </select>
+                           </select>
                         </div>
 
                         <!-- INVITADO 2 -->
                         <h3>Invitado 2</h3>
                         <div class="form-group">
-                            <label for="nombre2">Nombre y apellidos (Obligatorios) *</label>
+                            <label for="nombre2">Nombre y Apellidos (Obligatorio) *</label>
                             <input type="text" id="nombre2" name="nombre2" required placeholder="Ej. Carlos Pérez Gómez">
                             <small id="error-nombre2" style="color: #d9534f; font-size: 11px; display: none; margin-top: 4px;">Ingresa nombre y al menos dos apellidos.</small>
                         </div>
                         <div class="form-group">
                             <label for="asistencia2">¿Asistirá? *</label>
-                            <select id="asistencia2" name="asistencia2" required>
+                           <select id="asistencia2" name="asistencia2" required>
                                 <option value="" disabled selected>Selecciona una opción</option>
                                 <option value="Sí asisto">Sí, ahí estaré</option>
                                 <option value="No asisto">No podré asistir</option>
-                            </select>
+                           </select>
                         </div>
 
                         <!-- INVITADO 3 -->
                         <h3>Invitado 3</h3>
                         <div class="form-group">
-                            <label for="nombre3">Nombre y apellidos (Obligatorios) *</label>
-                            <input type="text" id="nombre3" name="nombre3" required placeholder="Ej. Ana Sofía Torres">
+                            <label for="nombre3">Nombre y Apellidos (Obligatorio) *</label>
+                            <input type="text" id="nombre3" name="nombre3" required placeholder="Ej. Ana Sofía Martínez">
                             <small id="error-nombre3" style="color: #d9534f; font-size: 11px; display: none; margin-top: 4px;">Ingresa nombre y al menos dos apellidos.</small>
                         </div>
                         <div class="form-group">
                             <label for="asistencia3">¿Asistirá? *</label>
-                            <select id="asistencia3" name="asistencia3" required>
+                           <select id="asistencia3" name="asistencia3" required>
                                 <option value="" disabled selected>Selecciona una opción</option>
                                 <option value="Sí asisto">Sí, ahí estaré</option>
                                 <option value="No asisto">No podré asistir</option>
-                            </select>
+                           </select>
                         </div>
 
                         <!-- MENSAJE -->
                         <div class="form-group" style="margin-top: 20px;">
                             <label for="mensaje">Mensaje o felicitación (Opcional)</label>
-                            <textarea id="mensaje" name="mensaje" placeholder="Escribe unas palabras..."></textarea>
+                           <textarea id="mensaje" name="mensaje" placeholder="Escribe unas palabras..."></textarea>
                         </div>
 
                         <button type="submit" id="btn-enviar" class="btn-rsvp">Enviar Confirmación</button>
@@ -510,9 +512,9 @@
                         <p id="success-message" style="font-size: 13px; margin-bottom: 15px; line-height: 1.4;"></p>
                         
                         <div class="pass-container" id="pass-section">
-                            <p style="font-size: 14px; margin-bottom: 8px; color: #BB9885; font-weight: bold;" id="display-nombres"></p>
-                            <p style="font-size: 13px; margin-bottom: 8px;"><strong>Tu Pase de Entrada:</strong></p>
-                            <img src="pasetres.jpg" alt="Pase de Invitación" id="pase-img">
+                            <p style="font-size: 13px; margin-bottom: 8px;"><strong id="pass-label-title">Tu Pase de Entrada:</strong></p>
+                            <!-- CANVAS DONDE SE DIBUJA EL PASE CON LOS NOMBRES -->
+                            <canvas id="pase-canvas"></canvas>
                             <button id="btn-descargar" class="btn-rsvp" style="margin-bottom: 10px;">Descargar Pase</button>
                         </div>
                     </div>
@@ -520,9 +522,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Canvas oculto para procesar la imagen con el nombre integrado -->
-    <canvas id="canvas-pase" style="display: none;"></canvas>
 
     <audio id="bg-music" loop>
         <source src="cancion.mp3" type="audio/mpeg">
@@ -606,7 +605,7 @@
             setTimeout(updateCountdown, 1000);
         })();
 
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzmwLjvlUBX6JQMMaC3FrWIkJ6D9S7l2ggYOyWEJ1vBr4xhqLPD_zIhoBNpnsShKKiU/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwOxtGuxzJhrgvG1G1Age1tQWvzA8DFWlKJUEr5gUQAUuMYCILLG9etgIiKkpm8EsFF/exec';
 
         const rsvpForm = document.getElementById('rsvp-form');
         const successScreen = document.getElementById('success-screen');
@@ -614,15 +613,13 @@
         const successMessage = document.getElementById('success-message');
         const passSection = document.getElementById('pass-section');
         const btnDescargar = document.getElementById('btn-descargar');
-        
         const inputNombre1 = document.getElementById('nombre1');
         const inputNombre2 = document.getElementById('nombre2');
         const inputNombre3 = document.getElementById('nombre3');
         const errorNombre1 = document.getElementById('error-nombre1');
         const errorNombre2 = document.getElementById('error-nombre2');
         const errorNombre3 = document.getElementById('error-nombre3');
-        const paseImg = document.getElementById('pase-img');
-        const displayNombres = document.getElementById('display-nombres');
+        const paseCanvas = document.getElementById('pase-canvas');
 
         function validarNombreCompleto(texto) {
             return texto.trim().split(/\s+/).length >= 3;
@@ -647,13 +644,13 @@
             btnEnviar.textContent = 'Verificando registro...';
 
             const datos = {
-                nombre1: n1,
-                asistencia1: document.getElementById('asistencia1').value,
-                nombre2: n2,
-                asistencia2: document.getElementById('asistencia2').value,
-                nombre3: n3,
-                asistencia3: document.getElementById('asistencia3').value,
-                mensaje: document.getElementById('mensaje').value.trim()
+               nombre1: n1,
+               asistencia1: document.getElementById('asistencia1').value,
+               nombre2: n2,
+               asistencia2: document.getElementById('asistencia2').value,
+               nombre3: n3,
+               asistencia3: document.getElementById('asistencia3').value,
+               mensaje: document.getElementById('mensaje').value.trim()
             };
 
             try {
@@ -666,15 +663,15 @@
                 if (result.status === "success") {
                     mostrarPantallaExito(result);
                 } else {
-                    alert('Hubo un error al registrar: ' + (result.message || ''));
-                    btnEnviar.disabled = false;
-                    btnEnviar.textContent = 'Enviar Confirmación';
+                   alert('Hubo un error al registrar: ' + (result.message || ''));
+                   btnEnviar.disabled = false;
+                   btnEnviar.textContent = 'Enviar Confirmación';
                 }
             } catch (error) {
-                console.error(error);
-                alert('Error de conexión con el servidor.');
-                btnEnviar.disabled = false;
-                btnEnviar.textContent = 'Enviar Confirmación';
+               console.error(error);
+               alert('Error de conexión con el servidor.');
+               btnEnviar.disabled = false;
+               btnEnviar.textContent = 'Enviar Confirmación';
             }
         });
 
@@ -685,77 +682,99 @@
             successTitle.textContent = data.titulo;
             successMessage.textContent = data.mensaje;
 
-            if (data.nombres) {
-                displayNombres.textContent = data.nombres;
+            const asiste1 = document.getElementById('asistencia1').value === "Sí asisto";
+            const asiste2 = document.getElementById('asistencia2').value === "Sí asisto";
+            const asiste3 = document.getElementById('asistencia3').value === "Sí asisto";
+            
+            let nombresArr = [];
+            if (asiste1) nombresArr.push(inputNombre1.value.trim());
+            if (asiste2) nombresArr.push(inputNombre2.value.trim());
+            if (asiste3) nombresArr.push(inputNombre3.value.trim());
+
+            if (nombresArr.length === 0) {
+                passSection.classList.add('hidden');
+                return;
             }
 
-            if (data.imagenPase) {
-                paseImg.src = data.imagenPase;
-                passSection.classList.remove('hidden');
-            } else {
-                passSection.classList.add('hidden');
+            passSection.classList.remove('hidden');
+            
+            // Lógica para asignar imagen de pase según cuántos asistan
+            let imagenPaseSrc = 'pase.jpg';
+            if (nombresArr.length === 2) {
+                imagenPaseSrc = 'pases.jpg';
+            } else if (nombresArr.length === 3) {
+                imagenPaseSrc = 'pase tres.jpg';
             }
+            if (data.imagenPase) imagenPaseSrc = data.imagenPase;
+
+            dibujarPaseEnCanvas(imagenPaseSrc, nombresArr);
         }
 
-        // Lógica de canvas corregida para estampar los nombres al descargar
-        btnDescargar.addEventListener('click', () => {
-            const n1 = inputNombre1.value.trim();
-            const n2 = inputNombre2.value.trim();
-            const n3 = inputNombre3.value.trim();
-
-            const canvas = document.getElementById('canvas-pase');
-            const ctx = canvas.getContext('2d');
+        function dibujarPaseEnCanvas(imageSrc, nombres) {
+            const ctx = paseCanvas.getContext('2d');
             const img = new Image();
-
             img.crossOrigin = "anonymous";
-            img.src = 'pasetres.jpg';
+            
+            img.onload = () => {
+                paseCanvas.width = img.naturalWidth || 800;
+                paseCanvas.height = img.naturalHeight || 1200;
+                ctx.drawImage(img, 0, 0, paseCanvas.width, paseCanvas.height);
 
-            img.onload = function() {
-                canvas.width = img.width;
-                canvas.height = img.height;
+                ctx.fillStyle = "#A37E6B"; 
+                ctx.font = "bold 36px 'SS Abigail', serif"; 
+                ctx.textAlign = "center";
 
-                // Dibujar la imagen base de pasetres.jpg
-                ctx.drawImage(img, 0, 0);
+                let x = paseCanvas.width / 2;
+                let y = paseCanvas.height * 0.88; 
 
-                // Configurar el estilo del texto
-                ctx.font = 'bold 35px Montserrat, Arial, sans-serif';
-                ctx.fillStyle = '#333333';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
+                let nombresMayus = nombres.map(n => n.toUpperCase());
 
-                const x = canvas.width / 2;
-                let y = canvas.height / 2;
+                if (nombresMayus.length === 3) {
+                    ctx.fillText(nombresMayus[0], x, y - 50);
+                    ctx.fillText(nombresMayus[1], x, y);
+                    ctx.fillText(nombresMayus[2], x, y + 50);
+                } else if (nombresMayus.length === 2) {
+                    ctx.fillText(nombresMayus[0], x, y - 25);
+                    ctx.fillText(nombresMayus[1], x, y + 25);
+                } else if (nombresMayus.length === 1) {
+                    ctx.fillText(nombresMayus[0], x, y);
+                }
+            };
 
-                const lineas = [n1, n2, n3];
-                const espacioLinea = 50; 
-
-                // Centrar el bloque completo de los 3 nombres verticalmente
-                y = y - (espacioLinea * (lineas.length - 1)) / 2;
-
-                lineas.forEach((linea, index) => {
-                    ctx.fillText(linea, x, y + (index * espacioLinea));
+            img.onerror = () => {
+                console.error("No se pudo cargar la imagen: " + imageSrc);
+                paseCanvas.width = 600;
+                paseCanvas.height = 800;
+                ctx.fillStyle = "#fdfbf7";
+                ctx.fillRect(0, 0, paseCanvas.width, paseCanvas.height);
+                
+                ctx.fillStyle = "#A37E6B";
+                ctx.font = "bold 28px 'SS Abigail', serif";
+                ctx.textAlign = "center";
+                ctx.fillText("PASE DE ENTRADA", paseCanvas.width / 2, 100);
+                
+                ctx.font = "24px 'Montserrat', sans-serif";
+                ctx.fillStyle = "#333333";
+                nombres.forEach((nombre, index) => {
+                    ctx.fillText(nombre.toUpperCase(), paseCanvas.width / 2, 300 + (index * 60));
                 });
-
-                // Generar y forzar la descarga de la imagen resultante
-                canvas.toBlob((blob) => {
-                    if (!blob) {
-                        alert('No se pudo generar la imagen del pase.');
-                        return;
-                    }
-                    const blobUrl = window.URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = blobUrl;
-                    a.download = 'pase_invitacion_tres.jpg';
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    window.URL.revokeObjectURL(blobUrl);
-                }, 'image/jpeg', 0.95);
+                
+                ctx.font = "14px 'Montserrat', sans-serif";
+                ctx.fillStyle = "#d9534f";
+                ctx.fillText("(Aviso: No se encontró la imagen " + imageSrc + ")", paseCanvas.width / 2, 700);
             };
 
-            img.onerror = function() {
-                alert('No se pudo cargar la imagen pasetres.jpg para procesar la descarga. Verifica que el archivo exista en la misma carpeta.');
-            };
+            img.src = imageSrc;
+        }
+
+        btnDescargar.addEventListener('click', () => {
+            const dataUrl = paseCanvas.toDataURL('image/jpeg', 0.95);
+            const a = document.createElement('a');
+            a.href = dataUrl;
+            a.download = 'pase_invitacion.jpg';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
         });
     </script>
 </body>
