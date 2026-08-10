@@ -512,7 +512,7 @@
                         <div class="pass-container" id="pass-section">
                             <p style="font-size: 14px; margin-bottom: 8px; color: #BB9885; font-weight: bold;" id="display-nombres"></p>
                             <p style="font-size: 13px; margin-bottom: 8px;"><strong>Tu Pase de Entrada:</strong></p>
-                            <img src="pase.jpg" alt="Pase de Invitación" id="pase-img">
+                            <img src="pasetres.jpg" alt="Pase de Invitación" id="pase-img">
                             <button id="btn-descargar" class="btn-rsvp" style="margin-bottom: 10px;">Descargar Pase</button>
                         </div>
                     </div>
@@ -520,6 +520,9 @@
             </div>
         </div>
     </div>
+
+    <!-- Canvas oculto para procesar la imagen con el nombre integrado -->
+    <canvas id="canvas-pase" style="display: none;"></canvas>
 
     <audio id="bg-music" loop>
         <source src="cancion.mp3" type="audio/mpeg">
@@ -694,34 +697,65 @@
             }
         }
 
-        btnDescargar.addEventListener('click', async () => {
-            const imagePath = paseImg.src;
-            try {
-                const response = await fetch(imagePath);
-                const blob = await response.blob();
-                if (navigator.canShare && navigator.canShare({ files: [new File([blob], 'pase.jpg', { type: blob.type })] })) {
-                    await navigator.share({
-                        title: 'Tu Pase de Invitación',
-                        text: 'Aquí tienes tu código de acceso.',
-                        files: [new File([blob], 'pase.jpg', { type: blob.type })]
-                    });
-                } else {
+        // Lógica de canvas corregida para estampar los nombres al descargar
+        btnDescargar.addEventListener('click', () => {
+            const n1 = inputNombre1.value.trim();
+            const n2 = inputNombre2.value.trim();
+            const n3 = inputNombre3.value.trim();
+
+            const canvas = document.getElementById('canvas-pase');
+            const ctx = canvas.getContext('2d');
+            const img = new Image();
+
+            img.crossOrigin = "anonymous";
+            img.src = 'pasetres.jpg';
+
+            img.onload = function() {
+                canvas.width = img.width;
+                canvas.height = img.height;
+
+                // Dibujar la imagen base de pasetres.jpg
+                ctx.drawImage(img, 0, 0);
+
+                // Configurar el estilo del texto
+                ctx.font = 'bold 35px Montserrat, Arial, sans-serif';
+                ctx.fillStyle = '#333333';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+
+                const x = canvas.width / 2;
+                let y = canvas.height / 2;
+
+                const lineas = [n1, n2, n3];
+                const espacioLinea = 50; 
+
+                // Centrar el bloque completo de los 3 nombres verticalmente
+                y = y - (espacioLinea * (lineas.length - 1)) / 2;
+
+                lineas.forEach((linea, index) => {
+                    ctx.fillText(linea, x, y + (index * espacioLinea));
+                });
+
+                // Generar y forzar la descarga de la imagen resultante
+                canvas.toBlob((blob) => {
+                    if (!blob) {
+                        alert('No se pudo generar la imagen del pase.');
+                        return;
+                    }
                     const blobUrl = window.URL.createObjectURL(blob);
                     const a = document.createElement('a');
                     a.href = blobUrl;
-                    a.download = 'pase_invitacion.jpg';
+                    a.download = 'pase_invitacion_tres.jpg';
                     document.body.appendChild(a);
                     a.click();
                     document.body.removeChild(a);
                     window.URL.revokeObjectURL(blobUrl);
-                }
-            } catch (err) {
-                const a = document.createElement('a');
-                a.href = imagePath;
-                a.download = 'pase_invitacion.jpg';
-                a.target = '_blank';
-                a.click();
-            }
+                }, 'image/jpeg', 0.95);
+            };
+
+            img.onerror = function() {
+                alert('No se pudo cargar la imagen pasetres.jpg para procesar la descarga. Verifica que el archivo exista en la misma carpeta.');
+            };
         });
     </script>
 </body>
