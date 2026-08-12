@@ -1,0 +1,2090 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis 15 Años</title>
+
+    <!-- Etiquetas Open Graph para la miniatura de WhatsApp -->
+    <meta property="og:title" content="Mis 15 Años">
+    <meta property="og:description" content="Te invito a celebrar este momento tan especial conmigo. Haz click para abrir tu invitación.">
+    <meta property="og:image" content="portada.jpg">
+    <meta property="og:url" content="">
+    <meta property="og:type" content="website">
+
+    <link rel="preconnect" href="https://fonts.cdnfonts.com">
+    <link href="https://fonts.cdnfonts.com/css/ss-abigail" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Tipografías del sistema de asistencia -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+            background-color: #e8e2d8;
+            font-family: 'SS Abigail', serif;
+        }
+
+        /* Pantalla de bienvenida / Sobre inicial */
+        #welcome-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #f9f6f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            transition: opacity 1s ease, visibility 1s ease;
+            cursor: pointer;
+        }
+
+        #welcome-screen img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: center;
+        }
+
+        /* Contenedor principal estilo tarjeta móvil centrada */
+        .invitation-wrapper {
+            width: 100%;
+            max-width: 480px;
+            margin: 0 auto;
+            background-color: #f9f6f0;
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.15);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #main-content {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 1.5s ease;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .section-img {
+            width: 100%;
+            background-color: #f9f6f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            line-height: 0;
+            font-size: 0;
+        }
+
+        .section-img img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Animación de entrada con zoom elegante */
+        .animate-zoom {
+            opacity: 0;
+            transform: scale(0.95);
+            transition: opacity 1.2s ease-out, transform 1.2s ease-out;
+        }
+
+        .animate-zoom.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Animación especial flotante/deslizante */
+        .animate-float {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1.2s ease-out, transform 1.2s ease-out;
+        }
+
+        .animate-float.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Animación especial para asistencia */
+        .animate-flip-special {
+            opacity: 0;
+            transform: perspective(1000px) rotateX(25deg) scale(0.85);
+            filter: brightness(1.2);
+            transition:
+                opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 1.4s cubic-bezier(0.16, 1, 0.3, 1),
+                filter 1.4s ease;
+        }
+
+        .animate-flip-special.active {
+            opacity: 1;
+            transform: perspective(1000px) rotateX(0deg) scale(1);
+            filter: brightness(1);
+        }
+
+        /* Sección de cuenta regresiva */
+        .countdown-section {
+            width: 100%;
+            padding: 40px 20px 30px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #ffffff;
+        }
+
+        .countdown {
+            display: flex;
+            gap: 35px;
+            align-items: flex-end;
+            justify-content: center;
+        }
+
+        .block {
+            text-align: center;
+            position: relative;
+        }
+
+        .number {
+            font-size: 50px;
+            color: #BB9885;
+            line-height: 1;
+            letter-spacing: 2px;
+            text-shadow: 0 2px 8px rgba(187, 152, 133, 0.25);
+        }
+
+        .block::after {
+            content: "";
+            display: block;
+            width: 32px;
+            height: 1px;
+            background: rgba(187, 152, 133, 0.4);
+            margin: 8px auto 6px;
+        }
+
+        .label {
+            font-size: 11px;
+            letter-spacing: 3px;
+            color: #A37E6B;
+        }
+
+        /* Sección de Ceremonia y Ubicación */
+        .location-section {
+            width: 100%;
+            background-color: #F9EEEB;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 20px 45px 20px;
+        }
+
+        .location-section img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Sección de Recepción */
+        .reception-section {
+            width: 100%;
+            background-color: #F9EEEB;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 20px 45px 20px;
+        }
+
+        .reception-section img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Galería */
+        .gallery-title-section {
+            width: 100%;
+            background-color: #f9f6f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            line-height: 0;
+            font-size: 0;
+        }
+
+        .gallery-title-section img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .gallery-section {
+            width: 100%;
+            background-color: #f9f6f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            line-height: 0;
+            font-size: 0;
+            padding: 0;
+            margin: 0;
+        }
+
+        .slider-container {
+            position: relative;
+            width: 100%;
+            height: 600px;
+            overflow: hidden;
+            background: #f9f6f0;
+        }
+
+        .slider-container img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 1.2s ease-in-out;
+        }
+
+        .slider-container img.active {
+            opacity: 1;
+        }
+
+        /* Botón de ubicación */
+        .location-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 28px;
+            background-color: #E5A6AC;
+            color: #ffffff;
+            font-family: 'SS Abigail', serif;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-decoration: none;
+            border-radius: 30px;
+            box-shadow: 0 4px 10px rgba(229, 166, 172, 0.3);
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .location-btn:hover {
+            transform: scale(1.05);
+            background-color: #d8959b;
+        }
+
+
+        /* =========================================================
+           SISTEMA DE ASISTENCIA Y PASES
+           ========================================================= */
+
+        .rsvp-container-wrapper {
+            width: 100%;
+            background-color: #F9EEEB;
+            padding: 20px 15px 40px 15px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .asistencia-contenedor {
+            width: 100%;
+            max-width: 520px;
+        }
+
+        .asistencia-tarjeta {
+            background: rgba(255,255,255,.92);
+            border: 1px solid #d5ad65;
+            border-radius: 25px;
+            padding: 35px 28px;
+            box-shadow: 0 15px 45px rgba(128,72,89,.15);
+            font-family: 'Montserrat', sans-serif;
+            color: #5d424a;
+            line-height: normal;
+            font-size: initial;
+        }
+
+        .asistencia-tarjeta .titulo {
+            text-align: center;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 42px;
+            color: #a77b2f;
+            margin: 0 0 8px;
+            line-height: 1.1;
+            letter-spacing: normal;
+        }
+
+        .asistencia-tarjeta .subtitulo {
+            text-align: center;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 13px;
+            color: #80616a;
+            margin-bottom: 30px;
+            line-height: 1.4;
+        }
+
+        .asistencia-tarjeta .separador {
+            width: 70px;
+            height: 1px;
+            background: #caa35b;
+            margin: 12px auto 28px;
+        }
+
+        .asistencia-tarjeta .grupo {
+            margin-bottom: 20px;
+        }
+
+        .asistencia-tarjeta .etiqueta {
+            display: block;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 22px;
+            color: #9c6d28;
+            margin-bottom: 9px;
+            line-height: 1.2;
+            letter-spacing: normal;
+        }
+
+        .asistencia-tarjeta input[type=text] {
+            width: 100%;
+            padding: 14px 15px;
+            border-radius: 12px;
+            border: 1px solid #e0bdc7;
+            background: #fffafb;
+            outline: none;
+            font-family: 'Montserrat', sans-serif;
+            color: #5d424a;
+            font-size: 14px;
+            line-height: normal;
+        }
+
+        .asistencia-tarjeta .opciones {
+            display: flex;
+            gap: 12px;
+        }
+
+        .asistencia-tarjeta .opcion {
+            flex: 1;
+        }
+
+        .asistencia-tarjeta .opcion input {
+            display: none;
+        }
+
+        .asistencia-tarjeta .opcion label {
+            display: block;
+            text-align: center;
+            padding: 12px 8px;
+            border: 1px solid #e0bdc7;
+            border-radius: 12px;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 13px;
+            background: #fffafb;
+            line-height: normal;
+        }
+
+        .asistencia-tarjeta .opcion input:checked + label {
+            background: #f2d5dc;
+            border-color: #bd8d3e;
+            color: #815d20;
+            font-weight: 600;
+        }
+
+        .asistencia-tarjeta .boton {
+            width: 100%;
+            border: 0;
+            border-radius: 30px;
+            padding: 16px;
+            background: linear-gradient(
+                135deg,
+                #c49a4d,
+                #e0bd70,
+                #b98536
+            );
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 8px;
+            line-height: normal;
+        }
+
+        .asistencia-tarjeta .boton:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+        }
+
+        .asistencia-tarjeta .mensaje {
+            display: none;
+            text-align: center;
+            margin-top: 25px;
+            padding: 18px;
+            border-radius: 15px;
+            background: #fff6f8;
+            border: 1px solid #e5c3ca;
+            line-height: 1.6;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+        }
+
+        .asistencia-tarjeta .mensaje.visible {
+            display: block;
+        }
+
+        /* CONTENEDOR DE PASES */
+
+        .asistencia-tarjeta .pases {
+            display: none;
+            margin-top: 25px;
+        }
+
+        .asistencia-tarjeta .pases.visible {
+            display: block;
+        }
+
+        /* CADA PASE */
+
+        .asistencia-tarjeta .pase {
+            margin-top: 20px;
+        }
+
+        /* PARTE QUE SE DESCARGA */
+
+        .asistencia-tarjeta .contenido-pase {
+            position: relative;
+            width: 100%;
+            padding: 42px 25px;
+            text-align: center;
+
+            border: 2px solid #c9a154;
+
+            border-radius: 24px;
+
+            background: linear-gradient(
+                145deg,
+                #fffdfd,
+                #fff7f9,
+                #fdf0f3
+            );
+
+            box-shadow:
+                0 10px 30px
+                rgba(128,72,89,.12);
+
+            line-height: normal;
+        }
+
+        /* Decoración */
+
+        .asistencia-tarjeta .contenido-pase::before {
+            content: "✦";
+            display: block;
+            font-size: 18px;
+            color: #c9a154;
+            margin-bottom: 8px;
+        }
+
+        /* TITULO DEL PASE */
+
+        .asistencia-tarjeta .pase-titulo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 38px;
+            font-weight: 600;
+            color: #a77b2f;
+            margin: 0 0 18px;
+            line-height: 1.1;
+        }
+
+        /* LINEA */
+
+        .asistencia-tarjeta .pase-linea {
+            width: 90px;
+            height: 1px;
+            background: #d4b477;
+            margin: 0 auto 22px;
+        }
+
+        /* NOMBRE */
+
+        .asistencia-tarjeta .pase-nombre {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 28px;
+            font-weight: 500;
+            color: #66434d;
+            margin: 18px 0 25px;
+            line-height: 1.25;
+        }
+
+        /* CODIGO */
+
+        .asistencia-tarjeta .codigo {
+            display: inline-block;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 27px;
+            font-weight: 600;
+            letter-spacing: 7px;
+            color: #9c6d28;
+            padding: 10px 18px;
+            border-top: 1px solid #d4b477;
+            border-bottom: 1px solid #d4b477;
+            line-height: normal;
+        }
+
+        /* TEXTO CODIGO */
+
+        .asistencia-tarjeta .codigo-texto {
+            margin-top: 12px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #9b7c83;
+            line-height: normal;
+        }
+
+        /* BOTON DESCARGAR */
+
+        .asistencia-tarjeta .boton-descargar {
+            width: 100%;
+            border: 1px solid #d8aab7;
+            border-radius: 30px;
+            padding: 14px 20px;
+            margin-top: 16px;
+
+            background: linear-gradient(
+                135deg,
+                #e9b9c5,
+                #f2cbd3,
+                #dfabb9
+            );
+
+            color: #6f4b55;
+
+            font-family: 'Montserrat', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 5px 15px
+                rgba(170,105,120,.15);
+
+            transition: all .2s ease;
+        }
+
+        .asistencia-tarjeta .boton-descargar:hover {
+            transform: translateY(-1px);
+
+            box-shadow:
+                0 7px 18px
+                rgba(170,105,120,.22);
+        }
+
+        .asistencia-tarjeta .boton-descargar:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+        }
+
+
+        /* Control de Música */
+
+        #music-control {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 55px;
+            height: 55px;
+            background-color: #ffd1dc;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            z-index: 100;
+            border: 2px solid #ffffff;
+            transition: transform 0.3s ease;
+        }
+
+        #music-control:hover {
+            transform: scale(1.1);
+        }
+
+        #music-control svg {
+            width: 24px;
+            height: 24px;
+            fill: #555555;
+        }
+
+        .hidden {
+            opacity: 0;
+            visibility: hidden;
+            display: none;
+        }
+
+
+        @media(max-width:480px) {
+
+            .invitation-wrapper {
+                max-width: 100%;
+                box-shadow: none;
+            }
+
+            .countdown {
+                gap: 20px;
+            }
+
+            .number {
+                font-size: 42px;
+            }
+
+            .label {
+                font-size: 10px;
+            }
+
+            .slider-container {
+                height: 520px;
+            }
+
+            .asistencia-tarjeta {
+                padding: 30px 20px;
+            }
+
+            .asistencia-tarjeta .titulo {
+                font-size: 38px;
+            }
+
+            .asistencia-tarjeta .contenido-pase {
+                padding: 35px 18px;
+            }
+
+            .asistencia-tarjeta .pase-titulo {
+                font-size: 34px;
+            }
+
+            .asistencia-tarjeta .pase-nombre {
+                font-size: 25px;
+            }
+
+            .asistencia-tarjeta .codigo {
+                font-size: 23px;
+                letter-spacing: 5px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- Pantalla de Bienvenida -->
+    <div id="welcome-screen" title="Haz clic para abrir">
+        <img src="foto.jpg" alt="Sobre de invitación">
+    </div>
+
+    <!-- Contenedor general -->
+    <div class="invitation-wrapper">
+
+        <!-- Contenido Principal -->
+        <div id="main-content">
+
+            <!-- 1. Foto de Portada -->
+            <section class="section-img">
+                <img src="portada.jpg" alt="Portada de la invitación de Mis 15 Años">
+            </section>
+
+            <!-- 2. Foto de Frase -->
+            <section class="section-img">
+                <img src="frase.jpg" alt="Frase de Mis 15 Años" class="animate-zoom">
+            </section>
+
+            <!-- 3. Foto de Fecha -->
+            <section class="section-img">
+                <img src="fecha.jpg" alt="Fecha de Mis 15 Años" class="animate-zoom">
+            </section>
+
+            <!-- 4. Cuenta Regresiva -->
+            <section class="countdown-section">
+
+                <div class="countdown">
+
+                    <div class="block">
+                        <div id="days" class="number">0</div>
+                        <div class="label">DÍAS</div>
+                    </div>
+
+                    <div class="block">
+                        <div id="hours" class="number">00</div>
+                        <div class="label">HORAS</div>
+                    </div>
+
+                    <div class="block">
+                        <div id="minutes" class="number">00</div>
+                        <div class="label">MINUTOS</div>
+                    </div>
+
+                    <div class="block">
+                        <div id="seconds" class="number">00</div>
+                        <div class="label">SEGUNDOS</div>
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- 5. Ceremonia -->
+            <section class="location-section">
+
+                <img src="ceremonia.jpg"
+                     alt="Detalles de ceremonia"
+                     class="animate-zoom">
+
+                <a href="https://www.google.com/maps/place/Parroquia+del+Sagrado+Coraz%C3%B3n+de+Jes%C3%BAs/@28.6262123,-106.0734464,859m/data=!3m2!1e3!4b1!4m6!3m5!1s0x86ea5caebcfb39a9:0x7142c0ef10e82b9b!8m2!3d28.6262123!4d-106.0711241!16s%2Fg%2F1tgdcw5w!18m1!1e1?entry=ttu&g_ep=EgoyMDI2MDcyOS4wIKXMDSoASAFQAw%3D%3D"
+                   target="_blank"
+                   class="location-btn">
+                    VER UBICACIÓN
+                </a>
+
+            </section>
+
+            <!-- 6. Recepción -->
+            <section class="reception-section">
+
+                <img src="recepcion.jpg"
+                     alt="Detalles de recepción"
+                     class="animate-zoom">
+
+                <a href="https://www.google.com/maps/place/Quinta+kiri,+C.+Guadalupe+Posadas,+11+de+Febrero+Sur,+31066+Chihuahua,+Chih./data=!4m2!3m1!1s0x86ea5bac27293f75:0x64a47b49dd5ce364!18m1!1e1?utm_source=mstt_1&entry=gps&coh=192189&g_ep=CAESBzI2LjI5LjIYACCenQoqnwEsOTQyNjc3MjcsOTQyOTIxOTUsOTQyOTk1MzIsMTAwNzk2NDk4LDEwMDc5Nzc2MSwxMDA3OTY1MzUsOTQyODA1NzYsOTQyMDczOTQsOTQyMDc1MDYsOTQyMDg1MDYsOTQyMTg2NTMsOTQyMjk4MzksOTQyNzUxNjgsOTQyNzk2MTksMTAwODE1NjM1LDEwMDgyMDIzNywxMDA4MjI0ODlCAk1Y&skid=04858c28-c6d2-4605-bc97-a16742ce76be&g_st=aw"
+                   target="_blank"
+                   class="location-btn">
+                    VER UBICACIÓN
+                </a>
+
+            </section>
+
+            <!-- 7. Título Galería -->
+            <section class="gallery-title-section">
+
+                <img src="galeria.jpg"
+                     alt="Galería de Mis 15 Años"
+                     class="animate-zoom">
+
+            </section>
+
+            <!-- 8. Carrusel -->
+            <section class="gallery-section">
+
+                <div class="slider-container animate-zoom">
+
+                    <img src="https://i.imgur.com/MSYBfYT.jpeg"
+                         class="active"
+                         alt="Foto 1">
+
+                    <img src="https://i.imgur.com/OwS4Q50.png"
+                         alt="Foto 2">
+
+                    <img src="https://i.imgur.com/L67IlOh.jpeg"
+                         alt="Foto 3">
+
+                </div>
+
+            </section>
+
+            <!-- 9. Vestimenta -->
+            <section class="section-img">
+
+                <img src="vestimenta.jpg"
+                     alt="Código de vestimenta"
+                     class="animate-float">
+
+            </section>
+
+            <!-- 10. Regalo -->
+            <section class="section-img">
+
+                <img src="regalo.jpg"
+                     alt="Sugerencia de regalo"
+                     class="animate-float">
+
+            </section>
+
+
+            <!-- =====================================================
+                 11. ASISTENCIA + PASES
+                 ===================================================== -->
+
+            <section class="section-img"
+                     style="flex-direction:column;">
+
+                <img src="asistencia.jpg"
+                     alt="Asistencia"
+                     class="animate-flip-special"
+                     style="margin-bottom:0;">
+
+                <div class="rsvp-container-wrapper animate-flip-special">
+
+                    <div class="asistencia-contenedor">
+
+                        <div class="asistencia-tarjeta">
+
+                            <h1 class="titulo">
+                                Asistencia
+                            </h1>
+
+                            <div class="subtitulo">
+                                Agradecemos confirmar su asistencia
+                            </div>
+
+                            <div class="separador"></div>
+
+
+                            <!-- INVITADO 1 -->
+
+                            <div class="grupo">
+
+                                <label class="etiqueta">
+                                    Nombre 1
+                                </label>
+
+                                <input
+                                    id="nombre1"
+                                    type="text"
+                                    placeholder="Nombre y dos apellidos">
+
+                            </div>
+
+
+                            <div class="grupo">
+
+                                <label class="etiqueta">
+                                    Asistencia 1
+                                </label>
+
+                                <div class="opciones">
+
+                                    <div class="opcion">
+
+                                        <input
+                                            type="radio"
+                                            name="a1"
+                                            id="si1"
+                                            value="SI">
+
+                                        <label for="si1">
+                                            Sí asistiré
+                                        </label>
+
+                                    </div>
+
+
+                                    <div class="opcion">
+
+                                        <input
+                                            type="radio"
+                                            name="a1"
+                                            id="no1"
+                                            value="NO">
+
+                                        <label for="no1">
+                                            No asistiré
+                                        </label>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- INVITADO 2 -->
+
+                            <div class="grupo">
+
+                                <label class="etiqueta">
+                                    Nombre 2
+                                </label>
+
+                                <input
+                                    id="nombre2"
+                                    type="text"
+                                    placeholder="Nombre y dos apellidos">
+
+                            </div>
+
+
+                            <div class="grupo">
+
+                                <label class="etiqueta">
+                                    Asistencia 2
+                                </label>
+
+                                <div class="opciones">
+
+                                    <div class="opcion">
+
+                                        <input
+                                            type="radio"
+                                            name="a2"
+                                            id="si2"
+                                            value="SI">
+
+                                        <label for="si2">
+                                            Sí asistiré
+                                        </label>
+
+                                    </div>
+
+
+                                    <div class="opcion">
+
+                                        <input
+                                            type="radio"
+                                            name="a2"
+                                            id="no2"
+                                            value="NO">
+
+                                        <label for="no2">
+                                            No asistiré
+                                        </label>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- INVITADO 3 -->
+
+                            <div class="grupo">
+
+                                <label class="etiqueta">
+                                    Nombre 3
+                                </label>
+
+                                <input
+                                    id="nombre3"
+                                    type="text"
+                                    placeholder="Nombre y dos apellidos">
+
+                            </div>
+
+
+                            <div class="grupo">
+
+                                <label class="etiqueta">
+                                    Asistencia 3
+                                </label>
+
+                                <div class="opciones">
+
+                                    <div class="opcion">
+
+                                        <input
+                                            type="radio"
+                                            name="a3"
+                                            id="si3"
+                                            value="SI">
+
+                                        <label for="si3">
+                                            Sí asistiré
+                                        </label>
+
+                                    </div>
+
+
+                                    <div class="opcion">
+
+                                        <input
+                                            type="radio"
+                                            name="a3"
+                                            id="no3"
+                                            value="NO">
+
+                                        <label for="no3">
+                                            No asistiré
+                                        </label>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- BOTÓN -->
+
+                            <button
+                                class="boton"
+                                id="boton"
+                                onclick="enviar()">
+
+                                Enviar confirmación
+
+                            </button>
+
+
+                            <div
+                                id="mensaje"
+                                class="mensaje">
+                            </div>
+
+
+                            <div
+                                id="pases"
+                                class="pases">
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </div>
+
+
+    <!-- Reproductor de Audio -->
+
+    <audio id="bg-music" loop>
+
+        <source
+            src="cancion.mp3"
+            type="audio/mpeg">
+
+        Tu navegador no soporta el elemento de audio.
+
+    </audio>
+
+
+    <!-- Botón flotante de música -->
+
+    <div
+        id="music-control"
+        class="hidden"
+        title="Reproducir / Pausar música">
+
+        <svg
+            id="icon-speaker"
+            viewBox="0 0 24 24">
+
+            <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+
+        </svg>
+
+
+        <svg
+            id="icon-pause"
+            viewBox="0 0 24 24"
+            style="display:none;">
+
+            <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+
+        </svg>
+
+    </div>
+
+
+    <script>
+
+        /* =====================================================
+           BIENVENIDA Y MÚSICA
+           ===================================================== */
+
+        const welcomeScreen =
+            document.getElementById('welcome-screen');
+
+        const mainContent =
+            document.getElementById('main-content');
+
+        const bgMusic =
+            document.getElementById('bg-music');
+
+        const musicControl =
+            document.getElementById('music-control');
+
+        const iconSpeaker =
+            document.getElementById('icon-speaker');
+
+        const iconPause =
+            document.getElementById('icon-pause');
+
+        let isPlaying = false;
+
+
+        welcomeScreen.addEventListener('click', () => {
+
+            welcomeScreen.style.opacity = '0';
+
+            setTimeout(() => {
+
+                welcomeScreen.style.display = 'none';
+
+            }, 1000);
+
+
+            mainContent.style.visibility = 'visible';
+
+            mainContent.style.opacity = '1';
+
+            musicControl.classList.remove('hidden');
+
+
+            bgMusic.play()
+
+                .then(() => {
+
+                    isPlaying = true;
+
+                    updateMusicIcon();
+
+                })
+
+                .catch(error => {
+
+                    console.log(
+                        "Reproducción automática bloqueada por el navegador:",
+                        error
+                    );
+
+                });
+
+        });
+
+
+        musicControl.addEventListener('click', () => {
+
+            if (isPlaying) {
+
+                bgMusic.pause();
+
+                isPlaying = false;
+
+            } else {
+
+                bgMusic.play();
+
+                isPlaying = true;
+
+            }
+
+            updateMusicIcon();
+
+        });
+
+
+        function updateMusicIcon() {
+
+            if (isPlaying) {
+
+                iconSpeaker.style.display = 'none';
+
+                iconPause.style.display = 'block';
+
+            } else {
+
+                iconSpeaker.style.display = 'block';
+
+                iconPause.style.display = 'none';
+
+            }
+
+        }
+
+
+        /* =====================================================
+           ANIMACIONES
+           ===================================================== */
+
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+
+        const observer =
+            new IntersectionObserver(
+                (entries) => {
+
+                    entries.forEach(entry => {
+
+                        if (entry.isIntersecting) {
+
+                            entry.target.classList.add('active');
+
+                        }
+
+                    });
+
+                },
+                observerOptions
+            );
+
+
+        document
+            .querySelectorAll(
+                '.animate-zoom, .animate-float, .animate-flip-special'
+            )
+            .forEach(el => {
+
+                observer.observe(el);
+
+            });
+
+
+        /* =====================================================
+           CARRUSEL
+           ===================================================== */
+
+        const sliderImages =
+            document.querySelectorAll(
+                '.slider-container img'
+            );
+
+        let currentSlide = 0;
+
+
+        setInterval(() => {
+
+            sliderImages[currentSlide]
+                .classList.remove('active');
+
+            currentSlide =
+                (currentSlide + 1) %
+                sliderImages.length;
+
+            sliderImages[currentSlide]
+                .classList.add('active');
+
+        }, 3000);
+
+
+        /* =====================================================
+           CUENTA REGRESIVA
+           22 DE AGOSTO DE 2026 - 3:00 PM
+           ===================================================== */
+
+        const DATE_TARGET =
+            new Date(
+                2026,
+                7,
+                22,
+                15,
+                0,
+                0
+            );
+
+
+        const days =
+            document.getElementById('days');
+
+        const hours =
+            document.getElementById('hours');
+
+        const minutes =
+            document.getElementById('minutes');
+
+        const seconds =
+            document.getElementById('seconds');
+
+
+        const MS = 1000;
+
+        const MIN = MS * 60;
+
+        const H = MIN * 60;
+
+        const D = H * 24;
+
+
+        function format(n) {
+
+            return n < 10
+                ? '0' + n
+                : n;
+
+        }
+
+
+        (function updateCountdown() {
+
+            const now = new Date();
+
+            let dur =
+                DATE_TARGET - now;
+
+
+            if (dur < 0) {
+
+                dur = 0;
+
+            }
+
+
+            days.textContent =
+                Math.floor(dur / D);
+
+
+            hours.textContent =
+                format(
+                    Math.floor(
+                        (dur % D) / H
+                    )
+                );
+
+
+            minutes.textContent =
+                format(
+                    Math.floor(
+                        (dur % H) / MIN
+                    )
+                );
+
+
+            seconds.textContent =
+                format(
+                    Math.floor(
+                        (dur % MIN) / MS
+                    )
+                );
+
+
+            setTimeout(
+                updateCountdown,
+                1000
+            );
+
+        })();
+
+
+        /* =====================================================
+           API DEL SISTEMA DE PASES
+           ===================================================== */
+
+        const API_URL =
+            'https://script.google.com/macros/s/AKfycbyhKAlP-qujK1wFTBLsXt5x4jvJ3IEp39z7tKjiKAmcYCUZVgSn0kCVj-H4uohPJ4hx/exec';
+
+
+        /* =====================================================
+           LLAMAR API
+           ===================================================== */
+
+        function llamarAPI(parametros) {
+
+            return new Promise((resolve, reject) => {
+
+                const callback =
+                    'cb_' +
+                    Date.now() +
+                    '_' +
+                    Math.floor(
+                        Math.random() * 9999
+                    );
+
+
+                const script =
+                    document.createElement('script');
+
+
+                const query =
+                    new URLSearchParams({
+
+                        ...parametros,
+
+                        callback: callback
+
+                    });
+
+
+                const tiempo =
+                    setTimeout(() => {
+
+                        limpiar();
+
+                        reject();
+
+                    }, 15000);
+
+
+                window[callback] =
+                    function(data) {
+
+                        clearTimeout(tiempo);
+
+                        limpiar();
+
+                        resolve(data);
+
+                    };
+
+
+                function limpiar() {
+
+                    delete window[callback];
+
+                    if (script.parentNode) {
+
+                        script.parentNode
+                            .removeChild(script);
+
+                    }
+
+                }
+
+
+                script.onerror =
+                    function() {
+
+                        clearTimeout(tiempo);
+
+                        limpiar();
+
+                        reject();
+
+                    };
+
+
+                script.src =
+                    API_URL +
+                    '?' +
+                    query.toString();
+
+
+                document.body.appendChild(
+                    script
+                );
+
+            });
+
+        }
+
+
+        /* =====================================================
+           ENVIAR
+           ===================================================== */
+
+        async function enviar() {
+
+
+            const nombre1 =
+                document
+                    .getElementById('nombre1')
+                    .value
+                    .trim();
+
+
+            const nombre2 =
+                document
+                    .getElementById('nombre2')
+                    .value
+                    .trim();
+
+
+            const nombre3 =
+                document
+                    .getElementById('nombre3')
+                    .value
+                    .trim();
+
+
+            const a1 =
+                document.querySelector(
+                    'input[name="a1"]:checked'
+                )?.value || '';
+
+
+            const a2 =
+                document.querySelector(
+                    'input[name="a2"]:checked'
+                )?.value || '';
+
+
+            const a3 =
+                document.querySelector(
+                    'input[name="a3"]:checked'
+                )?.value || '';
+
+
+            const mensaje =
+                document.getElementById(
+                    'mensaje'
+                );
+
+
+            const pases =
+                document.getElementById(
+                    'pases'
+                );
+
+
+            const boton =
+                document.getElementById(
+                    'boton'
+                );
+
+
+            /* =================================================
+               VALIDAR INVITADO 1
+               ================================================= */
+
+            if (!nombre1) {
+
+                mensaje.className =
+                    'mensaje visible';
+
+                mensaje.textContent =
+                    'Escribe el nombre del invitado 1.';
+
+                return;
+
+            }
+
+
+            if (
+                nombre1.split(/\s+/).length < 3
+            ) {
+
+                mensaje.className =
+                    'mensaje visible';
+
+                mensaje.textContent =
+                    'Escribe el nombre completo del invitado 1.';
+
+                return;
+
+            }
+
+
+            if (!a1) {
+
+                mensaje.className =
+                    'mensaje visible';
+
+                mensaje.textContent =
+                    'Selecciona la asistencia del invitado 1.';
+
+                return;
+
+            }
+
+
+            /* =================================================
+               VALIDAR INVITADO 2
+               ================================================= */
+
+            if (nombre2) {
+
+                if (
+                    nombre2.split(/\s+/).length < 3
+                ) {
+
+                    mensaje.className =
+                        'mensaje visible';
+
+                    mensaje.textContent =
+                        'Escribe el nombre completo del invitado 2.';
+
+                    return;
+
+                }
+
+
+                if (!a2) {
+
+                    mensaje.className =
+                        'mensaje visible';
+
+                    mensaje.textContent =
+                        'Selecciona la asistencia del invitado 2.';
+
+                    return;
+
+                }
+
+            }
+
+
+            /* =================================================
+               VALIDAR INVITADO 3
+               ================================================= */
+
+            if (nombre3) {
+
+                if (!nombre2) {
+
+                    mensaje.className =
+                        'mensaje visible';
+
+                    mensaje.textContent =
+                        'Primero debes agregar al invitado 2.';
+
+                    return;
+
+                }
+
+
+                if (
+                    nombre3.split(/\s+/).length < 3
+                ) {
+
+                    mensaje.className =
+                        'mensaje visible';
+
+                    mensaje.textContent =
+                        'Escribe el nombre completo del invitado 3.';
+
+                    return;
+
+                }
+
+
+                if (!a3) {
+
+                    mensaje.className =
+                        'mensaje visible';
+
+                    mensaje.textContent =
+                        'Selecciona la asistencia del invitado 3.';
+
+                    return;
+
+                }
+
+            }
+
+
+            /* =================================================
+               ENVIANDO
+               ================================================= */
+
+            boton.disabled = true;
+
+            boton.textContent =
+                'Enviando...';
+
+
+            try {
+
+                const respuesta =
+                    await llamarAPI({
+
+                        accion: 'confirmar',
+
+                        invitado1: nombre1,
+
+                        asistencia1: a1,
+
+                        invitado2: nombre2,
+
+                        asistencia2: a2,
+
+                        invitado3: nombre3,
+
+                        asistencia3: a3
+
+                    });
+
+
+                if (!respuesta.ok) {
+
+                    mensaje.className =
+                        'mensaje visible';
+
+                    mensaje.textContent =
+                        respuesta.mensaje;
+
+                    return;
+
+                }
+
+
+                mensaje.className =
+                    'mensaje visible';
+
+                mensaje.textContent =
+                    respuesta.mensaje;
+
+
+                /* =================================================
+                   MOSTRAR PASES
+                   ================================================= */
+
+                if (
+                    respuesta.listaPases &&
+                    respuesta.listaPases.length
+                ) {
+
+                    pases.className =
+                        'pases visible';
+
+                    pases.innerHTML = '';
+
+
+                    respuesta.listaPases.forEach(
+                        function(p, index) {
+
+                            const idPase =
+                                'pase_' +
+                                index +
+                                '_' +
+                                Date.now();
+
+
+                            pases.innerHTML += `
+
+                                <div class="pase">
+
+                                    <div
+                                        class="contenido-pase"
+                                        id="${idPase}"
+                                    >
+
+                                        <div class="pase-titulo">
+                                            Pase de entrada
+                                        </div>
+
+                                        <div class="pase-linea"></div>
+
+                                        <div class="pase-nombre">
+                                            ${escapar(p.nombre)}
+                                        </div>
+
+                                        <div class="codigo">
+                                            ${escapar(p.codigo)}
+                                        </div>
+
+                                        <div class="codigo-texto">
+                                            Código de acceso
+                                        </div>
+
+                                    </div>
+
+
+                                    <button
+                                        type="button"
+                                        class="boton-descargar"
+                                        onclick="descargarPase(
+                                            '${idPase}',
+                                            this
+                                        )"
+                                    >
+                                        Descargar pase
+                                    </button>
+
+                                </div>
+
+                            `;
+
+                        }
+                    );
+
+                }
+
+            }
+
+
+            catch(error) {
+
+                console.error(error);
+
+                mensaje.className =
+                    'mensaje visible';
+
+                mensaje.textContent =
+                    'No se pudo conectar con el sistema.';
+
+            }
+
+
+            finally {
+
+                boton.disabled = false;
+
+                boton.textContent =
+                    'Enviar confirmación';
+
+            }
+
+        }
+
+
+        /* =====================================================
+           DESCARGAR PASE
+           ===================================================== */
+
+        async function descargarPase(
+            idPase,
+            boton
+        ) {
+
+            const contenido =
+                document.getElementById(
+                    idPase
+                );
+
+
+            if (!contenido) {
+
+                return;
+
+            }
+
+
+            boton.disabled = true;
+
+            boton.textContent =
+                'Preparando pase...';
+
+
+            try {
+
+
+                /* =================================================
+                   CARGAR HTML2CANVAS
+                   ================================================= */
+
+                if (!window.html2canvas) {
+
+                    await new Promise(
+                        (resolve, reject) => {
+
+                            const script =
+                                document.createElement(
+                                    'script'
+                                );
+
+
+                            script.src =
+                                'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+
+
+                            script.onload =
+                                resolve;
+
+
+                            script.onerror =
+                                reject;
+
+
+                            document.head.appendChild(
+                                script
+                            );
+
+                        }
+                    );
+
+                }
+
+
+                /* =================================================
+                   GENERAR IMAGEN
+                   ================================================= */
+
+                const canvas =
+                    await html2canvas(
+                        contenido,
+                        {
+
+                            scale: 3,
+
+                            backgroundColor:
+                                '#fffafb',
+
+                            useCORS: true,
+
+                            logging: false,
+
+                            imageTimeout: 15000,
+
+                            allowTaint: false
+
+                        }
+                    );
+
+
+                /* =================================================
+                   OBTENER NOMBRE
+                   ================================================= */
+
+                const nombre =
+                    contenido
+                        .querySelector(
+                            '.pase-nombre'
+                        )
+                        .textContent
+                        .trim();
+
+
+                const nombreArchivo =
+                    nombre
+
+                        .replace(
+                            /[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ]/g,
+                            ''
+                        )
+
+                        .replace(
+                            /\s+/g,
+                            '-'
+                        )
+
+                        .substring(
+                            0,
+                            50
+                        )
+
+                        ||
+                        'Invitado';
+
+
+                /* =================================================
+                   DESCARGAR PNG
+                   ================================================= */
+
+                canvas.toBlob(
+                    function(blob) {
+
+                        if (!blob) {
+
+                            throw new Error(
+                                'No se pudo generar la imagen.'
+                            );
+
+                        }
+
+
+                        const url =
+                            URL.createObjectURL(
+                                blob
+                            );
+
+
+                        const enlace =
+                            document.createElement(
+                                'a'
+                            );
+
+
+                        enlace.href =
+                            url;
+
+
+                        enlace.download =
+                            'Pase-' +
+                            nombreArchivo +
+                            '.png';
+
+
+                        document.body.appendChild(
+                            enlace
+                        );
+
+
+                        enlace.click();
+
+
+                        document.body.removeChild(
+                            enlace
+                        );
+
+
+                        setTimeout(
+                            function() {
+
+                                URL.revokeObjectURL(
+                                    url
+                                );
+
+                            },
+                            1000
+                        );
+
+                    },
+                    'image/png'
+                );
+
+
+            }
+
+
+            catch(error) {
+
+                console.error(error);
+
+                alert(
+                    'No se pudo descargar el pase. Intenta nuevamente.'
+                );
+
+            }
+
+
+            finally {
+
+                boton.disabled = false;
+
+                boton.textContent =
+                    'Descargar pase';
+
+            }
+
+        }
+
+
+        /* =====================================================
+           ESCAPAR
+           ===================================================== */
+
+        function escapar(texto) {
+
+            return String(texto)
+
+                .replace(
+                    /&/g,
+                    '&amp;'
+                )
+
+                .replace(
+                    /</g,
+                    '&lt;'
+                )
+
+                .replace(
+                    />/g,
+                    '&gt;'
+                )
+
+                .replace(
+                    /"/g,
+                    '&quot;'
+                )
+
+                .replace(
+                    /'/g,
+                    '&#039;'
+                );
+
+        }
+
+    </script>
+
+</body>
+</html>
